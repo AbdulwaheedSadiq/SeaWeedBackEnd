@@ -12,7 +12,6 @@ import java.util.Date;
 public class OrdersRequest {
     public Long productId;
     public Long customerId;
-    public Date createdDate;
     public int quantity;
     public int price;
     public String paymentReference;

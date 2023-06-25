@@ -3,6 +3,7 @@ package com.seaweed.seaweed.Services;
 
 import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Repositories.LoginRepo;
+import com.seaweed.seaweed.dto.login.SignUpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,8 @@ public class LoginService {
         return loginRepo.findAll();
     }
 
-    public Optional<Login> getById(Long id){
-        return loginRepo.findById(id);
+    public Optional<Login> getLogin(String u, String p){
+        return loginRepo.findUser(u,p);
     }
 
     public Long getTotal(){

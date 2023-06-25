@@ -1,5 +1,6 @@
 package com.seaweed.seaweed.Controllers;
 
+import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Models.Products;
 import com.seaweed.seaweed.Services.ProductService;
 import com.seaweed.seaweed.dto.products.ProductsRequest;
@@ -20,14 +21,17 @@ public class ProductController {
     @PostMapping("create")
     public ResponseEntity<ProductsResponse> create(@RequestBody ProductsRequest request){
         Products p = new Products();
+        Login login = new Login();
+        login.setId(request.getLogin());
 
         p.setLocation(request.getLocation());
         p.setTitle(request.getTitle());
+        p.setImage(request.getImage());
         p.setPrice(request.getPrice());
         p.setDescription(request.getDescription());
         p.setStatus("ForSale");
         p.setQuantity(request.getQuantity());
-        p.setLogin(request.getLogin());
+        p.setLogin(login);
         productService.insert(p);
 
         //response
@@ -38,6 +42,7 @@ public class ProductController {
         response.setPrice(p.getPrice());
         response.setStatus(p.getStatus());
         response.setTitle(p.getTitle());
+        response.setImage(p.getImage());
 
         return ResponseEntity.ok(response);
 
@@ -59,15 +64,16 @@ public class ProductController {
     public ResponseEntity<ProductsResponse> update(@RequestBody ProductsRequest request,@PathVariable Long id){
 
         Products p = productService.getById(id);
+        Login login = new Login();
+        login.setId(request.getLogin());
 
 
         p.setLocation(request.getLocation());
         p.setTitle(request.getTitle());
+        p.setImage(request.getImage());
         p.setPrice(request.getPrice());
         p.setDescription(request.getDescription());
-        p.setStatus("ForSale");
         p.setQuantity(request.getQuantity());
-        p.setLogin(request.getLogin());
         productService.insert(p);
 
         //response
@@ -78,7 +84,7 @@ public class ProductController {
         response.setPrice(p.getPrice());
         response.setStatus(p.getStatus());
         response.setTitle(p.getTitle());
-
+        response.setImage(p.getImage());
         return ResponseEntity.ok(response);
     }
 }

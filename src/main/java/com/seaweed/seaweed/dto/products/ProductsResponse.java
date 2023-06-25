@@ -13,6 +13,7 @@ public class ProductsResponse{
 
     public  Long id;
     public  String title;
+    public  String image;
     public  String description;
     public  String location;
     public  int quantity;

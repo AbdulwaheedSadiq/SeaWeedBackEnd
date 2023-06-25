@@ -1,6 +1,8 @@
 package com.seaweed.seaweed.Controllers;
 
+import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Models.Orders;
+import com.seaweed.seaweed.Models.Products;
 import com.seaweed.seaweed.Services.OrderService;
 import com.seaweed.seaweed.dto.orders.OrdersRequest;
 import com.seaweed.seaweed.dto.orders.OrdersResponse;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 @CrossOrigin
@@ -21,9 +25,14 @@ public class OrdersController {
     public ResponseEntity<OrdersResponse> create(@RequestBody OrdersRequest request){
 
             Orders o = new Orders();
-            o.setProductId(request.getProductId());
-            o.setCustomerId(request.getCustomerId());
-            //o.setCreatedDate(LocalDate.now());
+            Login login = new Login();
+            login.setId(request.getCustomerId());
+
+            Products products = new Products();
+            products.setId(request.getProductId());
+            o.setCreatedDate(LocalDateTime.now());
+            o.setLogin(login);
+            o.setProducts(products);
             o.setQuantity(request.getQuantity());
             o.setPrice(request.getPrice());
             o.setPaymentReference(request.getPaymentReference());
@@ -33,9 +42,7 @@ public class OrdersController {
 
 //response
             OrdersResponse response = new OrdersResponse();
-            response.productId =o.productId;
             response.createdDate = o.createdDate;
-            response.customerId = o.customerId;
             response.price = o.price;
             response.quantity = o.quantity;
             response.paymentReference = o.paymentReference;
@@ -64,10 +71,17 @@ public class OrdersController {
 
         Orders o = orderService.findById(id);
 
+        Login login = new Login();
+        login.setId(request.getCustomerId());
+
+        Products products = new Products();
+        products.setId(request.getProductId());
         //Orders o = new Orders();
-        o.setProductId(request.productId);
-        o.setCustomerId(request.customerId);
+//        o.setProductId(request.productId);
+//        o.setCustomerId(request.customerId);
         //o.setCreatedDate(LocalDate.now());
+        o.setLogin(login);
+        o.setProducts(products);
         o.setQuantity(request.getQuantity());
         o.setPrice(request.getPrice());
         o.setPaymentReference(request.getPaymentReference());
@@ -78,9 +92,7 @@ public class OrdersController {
 
 //response
         OrdersResponse response = new OrdersResponse();
-        response.productId =o.productId;
         response.createdDate = o.createdDate;
-        response.customerId = o.customerId;
         response.price = o.price;
         response.quantity = o.quantity;
         response.paymentReference = o.paymentReference;

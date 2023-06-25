@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -18,9 +20,9 @@ public class Login {
     public String username;
     public String password;
     public int status; //1 for active 0 for inactive
+    @Column(name = "role_id")
+    public Long role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
-    public Roles roles;
-
+    @OneToMany(mappedBy = "login")
+    public List<Orders> orders;
 }

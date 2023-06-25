@@ -11,10 +11,11 @@ import java.util.Date;
 @AllArgsConstructor
 public class ProductsRequest {
     public  String title;
+    public  String image;
     public  String description;
     public  String location;
     public  int quantity;
     public  int price;
     public  String status;
-    public Login login;
+    public Long login;
 }

@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,15 +20,21 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     public Long id;
-    public Long productId;
-    public Long customerId;
-    public Date createdDate;
+    public LocalDateTime createdDate;
     public int quantity;
     public int price;
     public String paymentReference;
     public String paymentStatus;
     public String orderStatus;
-//
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    public Login login;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    public Products products;
+
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(name = "order_product",joinColumns = @JoinColumn(name="order_product"),
 //            inverseJoinColumns = @JoinColumn(name = "product_id"))

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class Products {
     @Column(name = "product_id")
     public  Long id;
     public  String title;
+    public  String image;
     public  String description;
     public  String location;
     public  int quantity;
@@ -25,5 +28,8 @@ public class Products {
     @ManyToOne
     @JoinColumn(name = "inserted_by",referencedColumnName = "login_id")
     public Login login;
+
+    @OneToMany(mappedBy = "products")
+    public List<Orders> orders;
 
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @Data
 @NoArgsConstructor
@@ -15,5 +16,5 @@ public class UsersRequest {
     public  String phoneNumber;
     public  String address;
     public  String gender;
-    public Date createdDate;
+    public LocalDateTime createdDate;
 }
