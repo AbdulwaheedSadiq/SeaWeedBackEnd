@@ -2,6 +2,7 @@ package com.seaweed.seaweed.Controllers;
 
 import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Models.Products;
+import com.seaweed.seaweed.Services.LoginService;
 import com.seaweed.seaweed.Services.ProductService;
 import com.seaweed.seaweed.dto.products.ProductsRequest;
 import com.seaweed.seaweed.dto.products.ProductsResponse;
@@ -18,6 +19,9 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    LoginService loginService;
+
     @PostMapping("create")
     public ResponseEntity<ProductsResponse> create(@RequestBody ProductsRequest request){
         Products p = new Products();
@@ -31,7 +35,7 @@ public class ProductController {
         p.setDescription(request.getDescription());
         p.setStatus("ForSale");
         p.setQuantity(request.getQuantity());
-        p.setLogin(login);
+        p.setInsertedBy(login);
         productService.insert(p);
 
         //response
@@ -58,7 +62,17 @@ public class ProductController {
     public ResponseEntity<Products> getById(@PathVariable Long id){
         Products products = productService.getById(id);
         return ResponseEntity.ok(products);
+    } @GetMapping("getByLoginId/{id}")
+    public ResponseEntity<List<Products>> getByLoginId(@PathVariable Long id){
+
+        Login l = loginService.getById(id);
+
+
+
+        List<Products> products = productService.getByLogin(l);
+        return ResponseEntity.ok(products);
     }
+
 
     @PutMapping("update/{id}")
     public ResponseEntity<ProductsResponse> update(@RequestBody ProductsRequest request,@PathVariable Long id){
@@ -87,4 +101,7 @@ public class ProductController {
         response.setImage(p.getImage());
         return ResponseEntity.ok(response);
     }
+
+
+
 }

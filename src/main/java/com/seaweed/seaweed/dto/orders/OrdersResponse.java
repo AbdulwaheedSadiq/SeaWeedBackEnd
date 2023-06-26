@@ -17,7 +17,7 @@ public class OrdersResponse {
 
     public Long id;
     public Products products;
-    public Login customerId;
+    public Login customer;
     public LocalDateTime createdDate;
     public int quantity;
     public int price;

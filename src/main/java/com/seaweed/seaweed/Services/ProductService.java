@@ -1,5 +1,6 @@
 package com.seaweed.seaweed.Services;
 import com.seaweed.seaweed.Exceptions.findProductsByIdNotFoundException;
+import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Models.Products;
 import com.seaweed.seaweed.Repositories.ProductsRepos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class ProductService {
 
     public Products getById(Long id){
         return productsRepos.findProductsById(id).orElseThrow(()-> new findProductsByIdNotFoundException("The Resorce with "+id+"Not Found"));
+    }
+
+    public List<Products> getByLogin(Login login){
+        return productsRepos.findByInsertedBy(login);
     }
 
     public Long getTotal(){

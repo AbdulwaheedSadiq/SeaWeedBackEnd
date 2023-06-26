@@ -27,12 +27,12 @@ public class Orders {
     public String paymentStatus;
     public String orderStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    public Login login;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "customer_id",referencedColumnName = "login_id")
+    public Login orderedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "product_id",referencedColumnName = "product_id")
     public Products products;
 
 //    @ManyToMany(fetch = FetchType.LAZY)

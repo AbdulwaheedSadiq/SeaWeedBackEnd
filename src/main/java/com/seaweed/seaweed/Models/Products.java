@@ -27,9 +27,9 @@ public class Products {
 
     @ManyToOne
     @JoinColumn(name = "inserted_by",referencedColumnName = "login_id")
-    public Login login;
+    public Login insertedBy;
 
-    @OneToMany(mappedBy = "products")
-    public List<Orders> orders;
+//    @OneToMany(mappedBy = "products")
+//    public List<Orders> orders;
 
 }

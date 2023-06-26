@@ -3,6 +3,7 @@ package com.seaweed.seaweed.Controllers;
 import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Models.Orders;
 import com.seaweed.seaweed.Models.Products;
+import com.seaweed.seaweed.Services.LoginService;
 import com.seaweed.seaweed.Services.OrderService;
 import com.seaweed.seaweed.dto.orders.OrdersRequest;
 import com.seaweed.seaweed.dto.orders.OrdersResponse;
@@ -21,6 +22,9 @@ public class OrdersController {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    LoginService loginService;
+
     @PostMapping("create")
     public ResponseEntity<OrdersResponse> create(@RequestBody OrdersRequest request){
 
@@ -30,14 +34,15 @@ public class OrdersController {
 
             Products products = new Products();
             products.setId(request.getProductId());
+
             o.setCreatedDate(LocalDateTime.now());
-            o.setLogin(login);
+            o.setOrderedBy(login);
             o.setProducts(products);
             o.setQuantity(request.getQuantity());
             o.setPrice(request.getPrice());
-            o.setPaymentReference(request.getPaymentReference());
-            o.setPaymentStatus(request.getPaymentStatus());
-            o.setOrderStatus(request.getOrderStatus());
+            o.setPaymentReference("KJI12t67");
+            o.setPaymentStatus("Billing");
+            o.setOrderStatus("Ordered");
             orderService.insert(o);
 
 //response
@@ -65,6 +70,26 @@ public class OrdersController {
         return ResponseEntity.ok(orders);
     }
 
+    @GetMapping("getByFarmerId/{id}")
+    public ResponseEntity<List<Orders>> getByInsertedId(@PathVariable Long id){
+        Login l = loginService.getById(id);
+        String orderStatus = "Ordered";
+
+
+        List<Orders> orders = orderService.findByProductsInsertedByAndOrderStatus(l,orderStatus);
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("getSold/{id}")
+    public ResponseEntity<List<Orders>> getSold(@PathVariable Long id){
+        Login l = loginService.getById(id);
+        String orderStatus = "Bought";
+
+
+        List<Orders> orders = orderService.findByProductsInsertedByAndOrderStatus(l,orderStatus);
+        return ResponseEntity.ok(orders);
+    }
+
 
     @PutMapping("update/{id}")
     public ResponseEntity<OrdersResponse> update(@RequestBody OrdersRequest request,@PathVariable Long id){
@@ -76,11 +101,7 @@ public class OrdersController {
 
         Products products = new Products();
         products.setId(request.getProductId());
-        //Orders o = new Orders();
-//        o.setProductId(request.productId);
-//        o.setCustomerId(request.customerId);
-        //o.setCreatedDate(LocalDate.now());
-        o.setLogin(login);
+        o.setOrderedBy(login);
         o.setProducts(products);
         o.setQuantity(request.getQuantity());
         o.setPrice(request.getPrice());

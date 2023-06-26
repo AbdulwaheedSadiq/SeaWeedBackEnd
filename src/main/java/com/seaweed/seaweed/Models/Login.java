@@ -23,6 +23,6 @@ public class Login {
     @Column(name = "role_id")
     public Long role;
 
-    @OneToMany(mappedBy = "login")
-    public List<Orders> orders;
+//    @OneToMany(mappedBy = "login")
+//    public List<Orders> orders;
 }

@@ -1,7 +1,9 @@
 package com.seaweed.seaweed.Services;
 
 
+import com.seaweed.seaweed.Exceptions.findUsersByIdNotFoundException;
 import com.seaweed.seaweed.Models.Login;
+import com.seaweed.seaweed.Models.Users;
 import com.seaweed.seaweed.Repositories.LoginRepo;
 import com.seaweed.seaweed.dto.login.SignUpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,10 @@ public class LoginService {
 
     public Optional<Login> getLogin(String u, String p){
         return loginRepo.findUser(u,p);
+    }
+
+    public Login getById(Long id){
+        return loginRepo.findLoginById(id).orElseThrow(()-> new findUsersByIdNotFoundException("The Resource Not  Found"));
     }
 
     public Long getTotal(){

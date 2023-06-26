@@ -1,6 +1,7 @@
 package com.seaweed.seaweed.Services;
 
 import com.seaweed.seaweed.Exceptions.findOrdersByIdNotFoundException;
+import com.seaweed.seaweed.Models.Login;
 import com.seaweed.seaweed.Models.Orders;
 import com.seaweed.seaweed.Repositories.OrdersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,8 @@ public class OrderService {
   public Long getTotal(){
       return ordersRepo.count();
   }
+
+    public List<Orders> findByProductsInsertedByAndOrderStatus(Login l, String orderStatus) {
+      return ordersRepo.findByProductsInsertedByAndOrderStatus(l,orderStatus);
+    }
 }
