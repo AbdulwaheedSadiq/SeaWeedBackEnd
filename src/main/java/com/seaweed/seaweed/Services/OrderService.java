@@ -38,4 +38,9 @@ public class OrderService {
     public List<Orders> findByProductsInsertedByAndOrderStatus(Login l, String orderStatus) {
       return ordersRepo.findByProductsInsertedByAndOrderStatus(l,orderStatus);
     }
+
+    public List<Orders> findByOrderedStatusAndOrderedBy(String orderStatus, Login l) {
+      return ordersRepo.findByOrderStatusAndOrderedBy(orderStatus,l);
+
+    }
 }

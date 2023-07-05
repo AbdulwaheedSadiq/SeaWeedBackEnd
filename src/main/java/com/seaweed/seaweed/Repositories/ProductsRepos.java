@@ -13,4 +13,6 @@ public interface ProductsRepos extends JpaRepository<Products,Long> {
     Optional<Products> findProductsById(Long id);
 
     List<Products> findByInsertedBy(Login login);
+
+    List<Products> findByStatus(String status);
 }

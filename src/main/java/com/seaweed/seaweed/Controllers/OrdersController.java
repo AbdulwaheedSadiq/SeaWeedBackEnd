@@ -5,6 +5,7 @@ import com.seaweed.seaweed.Models.Orders;
 import com.seaweed.seaweed.Models.Products;
 import com.seaweed.seaweed.Services.LoginService;
 import com.seaweed.seaweed.Services.OrderService;
+import com.seaweed.seaweed.Services.ProductService;
 import com.seaweed.seaweed.dto.orders.OrdersRequest;
 import com.seaweed.seaweed.dto.orders.OrdersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class OrdersController {
     @Autowired
     LoginService loginService;
 
+    @Autowired
+    ProductService productService;
+
     @PostMapping("create")
     public ResponseEntity<OrdersResponse> create(@RequestBody OrdersRequest request){
 
@@ -40,10 +44,22 @@ public class OrdersController {
             o.setProducts(products);
             o.setQuantity(request.getQuantity());
             o.setPrice(request.getPrice());
-            o.setPaymentReference("KJI12t67");
+            o.setPaymentReference(request.getPaymentReference());
             o.setPaymentStatus("Billing");
             o.setOrderStatus("Ordered");
             orderService.insert(o);
+
+            Products products1 = productService.getById(request.getProductId());
+            int remains = products1.getQuantity() - request.getQuantity();
+            if(remains <= 0){
+                products1.setQuantity(0);
+                products1.setDescription("SoldOut");
+                products1.setStatus("soldOut");
+            }else {
+                products1.setQuantity(remains);
+            }
+            productService.insert(products1);
+
 
 //response
             OrdersResponse response = new OrdersResponse();
@@ -70,6 +86,14 @@ public class OrdersController {
         return ResponseEntity.ok(orders);
     }
 
+    @PutMapping("UpdatePayments/{id}")
+    public ResponseEntity<Orders> UpdatePayments(@PathVariable Long id){
+        Orders orders = orderService.findById(id);
+        orders.setOrderStatus("Bought");
+        orders.setPaymentStatus("Bought");
+        return ResponseEntity.ok(orders);
+    }
+
     @GetMapping("getByFarmerId/{id}")
     public ResponseEntity<List<Orders>> getByInsertedId(@PathVariable Long id){
         Login l = loginService.getById(id);
@@ -87,6 +111,26 @@ public class OrdersController {
 
 
         List<Orders> orders = orderService.findByProductsInsertedByAndOrderStatus(l,orderStatus);
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("orderById/{id}")
+    public ResponseEntity<List<Orders>> orderById(@PathVariable Long id){
+        Login l = loginService.getById(id);
+        String orderStatus = "Ordered";
+
+
+        List<Orders> orders = orderService.findByOrderedStatusAndOrderedBy(orderStatus,l);
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("soldById/{id}")
+    public ResponseEntity<List<Orders>> soldById(@PathVariable Long id){
+        Login l = loginService.getById(id);
+        String orderStatus = "Bought";
+
+
+        List<Orders> orders = orderService.findByOrderedStatusAndOrderedBy(orderStatus,l);
         return ResponseEntity.ok(orders);
     }
 

@@ -37,4 +37,8 @@ public class ProductService {
     public Long getTotal(){
         return productsRepos.count();
     }
+
+    public List<Products> getByStatus(String status) {
+        return productsRepos.findByStatus(status);
+    }
 }

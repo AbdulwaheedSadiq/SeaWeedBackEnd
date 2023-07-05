@@ -62,14 +62,19 @@ public class ProductController {
     public ResponseEntity<Products> getById(@PathVariable Long id){
         Products products = productService.getById(id);
         return ResponseEntity.ok(products);
-    } @GetMapping("getByLoginId/{id}")
+    }
+
+    @GetMapping("getByLoginId/{id}")
     public ResponseEntity<List<Products>> getByLoginId(@PathVariable Long id){
-
         Login l = loginService.getById(id);
-
-
-
         List<Products> products = productService.getByLogin(l);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("getByStatus")
+    public ResponseEntity<List<Products>> getByStatus(){
+        String status = "ForSale";
+        List<Products> products = productService.getByStatus(status);
         return ResponseEntity.ok(products);
     }
 

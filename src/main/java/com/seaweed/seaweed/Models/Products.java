@@ -18,6 +18,7 @@ public class Products {
     @Column(name = "product_id")
     public  Long id;
     public  String title;
+    @Column(length = 70000)
     public  String image;
     public  String description;
     public  String location;

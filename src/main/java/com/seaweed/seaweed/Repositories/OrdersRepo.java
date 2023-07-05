@@ -15,6 +15,8 @@ public interface OrdersRepo extends JpaRepository<Orders,Long> {
 
     List<Orders> findByProductsInsertedByAndOrderStatus(Login l, String orderStatus);
 
+    List<Orders> findByOrderStatusAndOrderedBy(String orderStatus, Login l);
+
 //    @Query(value = "select * from sw_orders where customer =?1 AND password =?2 LIMIT 1;",nativeQuery = true)
 //    Optional<Login> findUser(String u, String p);
 }
