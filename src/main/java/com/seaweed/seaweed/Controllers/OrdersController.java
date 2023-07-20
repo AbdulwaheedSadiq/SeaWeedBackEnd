@@ -6,6 +6,9 @@ import com.seaweed.seaweed.Models.Products;
 import com.seaweed.seaweed.Services.LoginService;
 import com.seaweed.seaweed.Services.OrderService;
 import com.seaweed.seaweed.Services.ProductService;
+import com.seaweed.seaweed.dto.customReports.AdminReportCard;
+import com.seaweed.seaweed.dto.customReports.CustomersReportCards;
+import com.seaweed.seaweed.dto.customReports.FarmerDashboard;
 import com.seaweed.seaweed.dto.orders.OrdersRequest;
 import com.seaweed.seaweed.dto.orders.OrdersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,11 +89,13 @@ public class OrdersController {
         return ResponseEntity.ok(orders);
     }
 
-    @PutMapping("UpdatePayments/{id}")
-    public ResponseEntity<Orders> UpdatePayments(@PathVariable Long id){
-        Orders orders = orderService.findById(id);
+    @PutMapping("UpdatePayments/{controlNumber}")
+    public ResponseEntity<Orders> UpdatePayments(@PathVariable String controlNumber){
+
+        Orders orders = orderService.findByReferenceNumber(controlNumber);
         orders.setOrderStatus("Bought");
         orders.setPaymentStatus("Bought");
+        orderService.insert(orders);
         return ResponseEntity.ok(orders);
     }
 
@@ -112,6 +117,27 @@ public class OrdersController {
 
         List<Orders> orders = orderService.findByProductsInsertedByAndOrderStatus(l,orderStatus);
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("customerDashboard/{id}")
+    public ResponseEntity<CustomersReportCards> customerDashboard(@PathVariable Long id){
+
+        CustomersReportCards c = orderService.customerdashboard(id);
+        return ResponseEntity.ok(c);
+    }
+
+    @GetMapping("farmerDashboard/{id}")
+    public ResponseEntity<FarmerDashboard> farmerDashboard(@PathVariable Long id){
+
+        FarmerDashboard f = orderService.farmerDashboard(id);
+        return ResponseEntity.ok(f);
+    }
+
+    @GetMapping("adminDashboard/{id}")
+    public ResponseEntity<AdminReportCard> adminDashboard(@PathVariable Long id){
+
+        AdminReportCard a = orderService.adminDashboard(id);
+        return ResponseEntity.ok(a);
     }
 
     @GetMapping("orderById/{id}")
@@ -139,14 +165,6 @@ public class OrdersController {
     public ResponseEntity<OrdersResponse> update(@RequestBody OrdersRequest request,@PathVariable Long id){
 
         Orders o = orderService.findById(id);
-
-        Login login = new Login();
-        login.setId(request.getCustomerId());
-
-        Products products = new Products();
-        products.setId(request.getProductId());
-        o.setOrderedBy(login);
-        o.setProducts(products);
         o.setQuantity(request.getQuantity());
         o.setPrice(request.getPrice());
         o.setPaymentReference(request.getPaymentReference());

@@ -14,4 +14,6 @@ public interface UsersRepos extends JpaRepository<Users,Long> {
 
     @Query(value = "select * from sw_users where user_id =?1 LIMIT 1;",nativeQuery = true)
     Optional<Users> findUser(Long id);
+    @Query(value = "select COUNT(user_id) from sw_users",nativeQuery = true)
+   int countUsers();
 }

@@ -24,6 +24,7 @@ public class Products {
     public  String location;
     public  int quantity;
     public  int price;
+    public  int type;
     public  String status;
 
     @ManyToOne

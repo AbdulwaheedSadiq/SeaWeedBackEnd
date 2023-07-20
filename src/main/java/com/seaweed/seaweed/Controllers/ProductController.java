@@ -34,6 +34,7 @@ public class ProductController {
         p.setPrice(request.getPrice());
         p.setDescription(request.getDescription());
         p.setStatus("ForSale");
+        p.setType(request.getType());
         p.setQuantity(request.getQuantity());
         p.setInsertedBy(login);
         productService.insert(p);
@@ -45,6 +46,7 @@ public class ProductController {
         response.setQuantity(p.getQuantity());
         response.setPrice(p.getPrice());
         response.setStatus(p.getStatus());
+        response.setType(p.getType());
         response.setTitle(p.getTitle());
         response.setImage(p.getImage());
 
@@ -91,6 +93,7 @@ public class ProductController {
         p.setTitle(request.getTitle());
         p.setImage(request.getImage());
         p.setPrice(request.getPrice());
+        p.setType(request.getType());
         p.setDescription(request.getDescription());
         p.setQuantity(request.getQuantity());
         productService.insert(p);

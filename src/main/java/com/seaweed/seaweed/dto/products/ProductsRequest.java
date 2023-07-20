@@ -17,5 +17,6 @@ public class ProductsRequest {
     public  int quantity;
     public  int price;
     public  String status;
+    public  int type;
     public Long login;
 }
